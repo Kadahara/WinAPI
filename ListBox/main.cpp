@@ -4,7 +4,7 @@
 #include"resource.h"
 
 
-CONST CHAR* g_sz_VALUES[] = { "This", "is", "my", "first", "List", "Box" };
+CONST CHAR* g_sz_VALUES[] = { "Дехья", "Линнет", "Фокалорс", "Бенат", "Кадзуха", "Лини"};
 
 BOOL CALLBACK DlgProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 BOOL CALLBACK DlgProcAddElement(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
@@ -19,7 +19,6 @@ BOOL CALLBACK DlgProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	switch (uMsg)
 	{
-
 	case WM_INITDIALOG:
 	{
 		HWND hList = GetDlgItem(hwnd, IDC_LIST1);
@@ -41,7 +40,7 @@ BOOL CALLBACK DlgProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			CHAR sz_buffer[SIZE] = {};
 			HWND hList = GetDlgItem(hwnd, IDC_LIST1);
 			int i = SendMessage(hList, LB_GETCURSEL, 0, 0);
-			SendMessage(hList, LB_GETTEXT, i, (LPARAM)sz_buffer);
+			SendMessage(hList , LB_GETTEXT, i , (LPARAM)sz_buffer);
 			if (i < 0)
 			{
 				MessageBox(hwnd, "Вы ничего не выбрали", "Info", MB_OK | MB_ICONINFORMATION);
@@ -49,7 +48,9 @@ BOOL CALLBACK DlgProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			else
 			{
 				CHAR sz_message[SIZE] = {};
-				sprintf(sz_message, "Был выбран элемент номер %i, со значением \"%s\"", i, sz_buffer);
+				i++;
+				sprintf(sz_message, "Был выбран %i-го версонажа - \"%s\"", i, sz_buffer);
+				i--;
 				MessageBox(hwnd, sz_message, "Info", MB_OK | MB_ICONINFORMATION);
 			}
 		}
@@ -58,9 +59,7 @@ BOOL CALLBACK DlgProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		case IDCANCEL: EndDialog(hwnd, 0);
 		}
 		break;
-
 	case WM_CLOSE: EndDialog(hwnd, 0);
-
 	}
 	return FALSE;
 }
