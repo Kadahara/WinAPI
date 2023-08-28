@@ -1,4 +1,5 @@
 #include<Windows.h>
+#include"resource.h"
 
 CONST CHAR g_sz_WINDOW_ClASS[] = "My Window Class";
 
@@ -16,9 +17,12 @@ INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR IpCmdLine, IN
 	wc.style = 0;
 
 
-	wc.hIcon = LoadIcon(hInstance, IDI_APPLICATION);	//»конка отображаема€ в панеле задач
-	wc.hIconSm = LoadIcon(hInstance, IDI_APPLICATION);	//»конка отображаема€ в страке заголовка
-	wc.hCursor = LoadCursor(hInstance, IDC_ARROW);		//”казатель мыши при наведении на окно
+	//wc.hIcon = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_ICON_TORI));	//»конка отображаема€ в панеле задач
+	//wc.hIconSm = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_ICON_ELUMINATE));	//»конка отображаема€ в страке заголовка
+	wc.hIcon = (HICON)LoadImage(hInstance, "start_icon.ico", IMAGE_ICON, LR_DEFAULTSIZE, LR_DEFAULTSIZE, LR_LOADFROMFILE);
+	wc.hIconSm = (HICON)LoadImage(hInstance, "start_icon_mini.ico", IMAGE_ICON, LR_DEFAULTSIZE, LR_DEFAULTSIZE, LR_LOADFROMFILE);
+	//wc.hCursor = LoadCursor(hInstance, MAKEINTRESOURCE(IDC_CURSOR1));		//”казатель мыши при наведении на окно
+	wc.hCursor = (HCURSOR)LoadImage(hInstance, "star_curs.cur", IMAGE_CURSOR, LR_DEFAULTSIZE, LR_DEFAULTSIZE, LR_LOADFROMFILE);
 	wc.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);		//÷вет фона окна
 
 
@@ -67,6 +71,13 @@ INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR IpCmdLine, IN
 
 
 	//3)«апуск цикла сообщений:
+	MSG msg;
+	while (GetMessage(&msg, 0, 0, 0) > 0)
+	{
+		TranslateMessage(&msg);
+		DispatchMessage(&msg);
+	}
+
 	return 0;
 }
 
@@ -78,11 +89,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	case WM_CREATE:
 		break;
 	case WM_COMMAND:
-		switch (LOWORD(wParam))
-		{
 
-		}
-		break;
 
 	case WM_DESTROY:DestroyWindow(0);
 		break;
@@ -90,7 +97,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	case WM_CLOSE: DestroyWindow(hwnd);
 		break;
 
-	default: DefWindowProc(hwnd, uMsg, wParam, lParam);
+	default: return DefWindowProc(hwnd, uMsg, wParam, lParam);
 	}
 	return NULL;
 }
