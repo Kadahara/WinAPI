@@ -7,6 +7,12 @@
 #define IDC_CURSOR1                     104
 #define IDC_CURSOR2                     105
 
+#define IDC_STATIC						201
+
+#define IDC_BUTTON						202
+
+#define IDC_EDIT_TEXT					203
+
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
