@@ -22,6 +22,10 @@
 #define IDC_BUTTON_POINT				1014
 #define IDC_BUTTON_EQUAL				1015
 #define IDC_BUTTON_CLEAR				1016
+#define IDC_BUTTON_CLEAR_LAST_NUMBER	1017
+
+#define IDC_EDIT1						1020
+
 
 
 // Next default values for new objects

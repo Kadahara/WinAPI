@@ -1,7 +1,7 @@
 #include<Windows.h>
 #include"resource.h"
 
-#define BTN_STYLE WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON
+
 
 CONST CHAR g_sz_WINDOW_ClASS[] = "My Calculator";
 //g_ Global
@@ -26,10 +26,10 @@ INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR IpCmdLine, IN
 	wc.cbWndExtra = 0;
 	wc.style = 0;
 
-	wc.hIcon = LoadIcon(hInstance, IDI_APPLICATION);
-	wc.hIconSm = LoadIcon(hInstance, IDI_APPLICATION);
+	wc.hIcon = (HICON)LoadImage(hInstance, "icon_calc.ico", IMAGE_ICON, LR_DEFAULTSIZE, LR_DEFAULTSIZE, LR_LOADFROMFILE);
+	wc.hIconSm = (HICON)LoadImage(hInstance, "icon_calc_mini.ico", IMAGE_ICON, LR_DEFAULTSIZE, LR_DEFAULTSIZE, LR_LOADFROMFILE);
 	wc.hCursor = LoadCursor(hInstance, IDC_ARROW);
-	wc.hbrBackground = (HBRUSH)(COLOR_WINDOW );
+	wc.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
 
 	wc.hInstance = hInstance;
 	wc.lpfnWndProc = WndProc;
@@ -86,10 +86,13 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	{
 	case WM_CREATE:
 	{
+
+#define BTN_STYLE WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON 
+
 		HWND hDisplay = CreateWindowEx
 		(
-			0, "Static", "Results",
-			WS_CHILD | WS_VISIBLE | SS_RIGHT | SS_SUNKEN | SS_CENTERIMAGE,
+			0, "Static", "Static ",
+			WS_CHILD | WS_VISIBLE | SS_RIGHT | SS_SUNKEN | SS_CENTERIMAGE ,
 			g_i_START_X, g_i_START_Y,
 			g_i_BTN_SIZE * 5 + g_i_INTREVAL_BUTTON * 4, g_i_BTN_SIZE,
 			hwnd,
@@ -242,7 +245,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		);
 		CreateWindowEx
 		(
-			0, "Button", " - ",
+			0, "Button", " --- ",
 			BTN_STYLE,
 			g_i_START_X + (g_i_BTN_SIZE + g_i_INTREVAL_BUTTON) * 3, g_i_HEIGHT * 3 + g_i_START_Y,
 			g_i_BTN_SIZE, g_i_BTN_SIZE,
@@ -264,10 +267,21 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		);
 		CreateWindowEx
 		(
-			0, "Button", " C ",
+			0, "Button", "<---",
 			BTN_STYLE,
 			g_i_START_X*2 + g_i_BTN_SIZE * 4 + g_i_INTREVAL_BUTTON * 3, g_i_HEIGHT + g_i_START_Y,
-			g_i_BTN_SIZE, g_i_BTN_SIZE_DOUBLE,
+			g_i_BTN_SIZE, g_i_BTN_SIZE,
+			hwnd,
+			(HMENU)IDC_BUTTON_CLEAR_LAST_NUMBER,
+			GetModuleHandle(NULL),
+			NULL
+		);
+		CreateWindowEx
+		(
+			0, "Button", " C ",
+			BTN_STYLE,
+			g_i_START_X * 2 + g_i_BTN_SIZE * 4 + g_i_INTREVAL_BUTTON * 3, g_i_HEIGHT * 2 + g_i_START_Y,
+			g_i_BTN_SIZE, g_i_BTN_SIZE,
 			hwnd,
 			(HMENU)IDC_BUTTON_CLEAR,
 			GetModuleHandle(NULL),
@@ -284,9 +298,22 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			GetModuleHandle(NULL),
 			NULL
 		);
+
 	}
 		break;
 	case WM_COMMAND:
+	{
+
+
+		switch (LOWORD(wParam))
+		{
+		case IDC_BUTTON_0:
+		{
+
+		}
+		break;
+		};
+	}
 		break;
 	case WM_DESTROY:PostQuitMessage(0); break;
 	case WM_CLOSE: DestroyWindow(hwnd); break;
