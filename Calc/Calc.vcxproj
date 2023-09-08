@@ -135,6 +135,12 @@
   <ItemGroup>
     <ResourceCompile Include="recourc.rc" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="icon_bmp\Button_aster.bmp" />
+    <Image Include="icon_bmp\Button_minus.bmp" />
+    <Image Include="icon_bmp\Button_plus.bmp" />
+    <Image Include="icon_bmp\Button_slash.bmp" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
