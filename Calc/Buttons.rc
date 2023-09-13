@@ -1,6 +1,6 @@
 // Microsoft Visual C++ generated resource script.
 //
-#include "resource.h"
+#include "buttons.h"
 
 #define APSTUDIO_READONLY_SYMBOLS
 /////////////////////////////////////////////////////////////////////////////
@@ -13,11 +13,10 @@
 #undef APSTUDIO_READONLY_SYMBOLS
 
 /////////////////////////////////////////////////////////////////////////////
-// Russian (Russia) resources
+// Английский (США) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_RUS)
-LANGUAGE LANG_RUSSIAN, SUBLANG_DEFAULT
-#pragma code_page(1251)
+LANGUAGE 25, 1
 
 #ifdef APSTUDIO_INVOKED
 /////////////////////////////////////////////////////////////////////////////
@@ -25,33 +24,36 @@ LANGUAGE LANG_RUSSIAN, SUBLANG_DEFAULT
 // TEXTINCLUDE
 //
 
-1 TEXTINCLUDE 
+1 TEXTINCLUDE  
 BEGIN
-    "resource.h\0"
+    "buttons.h\0"
 END
 
-2 TEXTINCLUDE 
+2 TEXTINCLUDE  
 BEGIN
     "#include ""winres.h""\r\n"
     "\0"
 END
 
-3 TEXTINCLUDE 
+3 TEXTINCLUDE  
 BEGIN
     "\r\n"
     "\0"
 END
 
 #endif    // APSTUDIO_INVOKED
+IDB_BUTTON_0    BITMAP          "buttonsbmp\\square_blue\\button_0.bmp"
+IDB_BUTTON_1    BITMAP          "buttonsbmp\\square_blue\\button_1.bmp"
+IDB_BUTTON_2    BITMAP          "buttonsbmp\\square_blue\\button_2.bmp"
+IDB_BUTTON_3    BITMAP          "buttonsbmp\\square_blue\\button_3.bmp"
+IDB_BUTTON_4    BITMAP          "buttonsbmp\\square_blue\\button_4.bmp"
+IDB_BUTTON_5    BITMAP          "buttonsbmp\\square_blue\\button_5.bmp"
+IDB_BUTTON_6    BITMAP          "buttonsbmp\\square_blue\\button_6.bmp"
+IDB_BUTTON_7    BITMAP          "buttonsbmp\\square_blue\\button_7.bmp"
+IDB_BUTTON_8    BITMAP          "buttonsbmp\\square_blue\\button_8.bmp"
+IDB_BUTTON_9    BITMAP          "buttonsbmp\\square_blue\\button_9.bmp"
 
-
-/////////////////////////////////////////////////////////////////////////////
-//
-// Bitmap
-//
-
-
-#endif    // Russian (Russia) resources
+#endif    // Английский (США) resources
 /////////////////////////////////////////////////////////////////////////////
 
 
@@ -65,4 +67,3 @@ END
 
 /////////////////////////////////////////////////////////////////////////////
 #endif    // not APSTUDIO_INVOKED
-

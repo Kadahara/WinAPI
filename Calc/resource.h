@@ -13,23 +13,27 @@
 #define IDC_BUTTON_7                    1007
 #define IDC_BUTTON_8                    1008
 #define IDC_BUTTON_9                    1009
+
 #define IDC_BUTTON_PLUS                 1010
 #define IDC_BUTTON_MINUS                1011
 #define IDC_BUTTON_ASTER                1012
 #define IDC_BUTTON_SLASH                1013
+
 #define IDC_BUTTON_POINT                1014
 #define IDC_BUTTON_EQUAL                1015
 #define IDC_BUTTON_CLEAR                1016
 #define IDC_BUTTON_CLEAR_LAST_NUMBER    1017
 #define IDC_BUTTON_OK                   1018
+
 #define IDC_STATIC                      3000
 
-#define IDC_COMBO_BOX                   4001
+#define IDC_SQUARE                      200
+#define IDC_ROUND                       201
 
-#define IDB_BITMAP_PLUS                 2000
-#define IDB_BITMAP_MINUS                2001
-#define IDB_BITMAP_ASTER                2002
-#define IDB_BITMAP_SLASH                2003
+#define IDC_EXIT                        300
+
+
+
 
 // Next default values for new objects
 // 

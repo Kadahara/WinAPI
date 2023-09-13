@@ -4,9 +4,12 @@
 #include"resource.h"
 
 
-CONST CHAR* g_sz_VALUES[] = { "One style", "Two style", "Norm Style"};
+
+CONST CHAR* g_sz_VALUES[] = { "One style", "Two style", "Norm Style" };
 
 CONST CHAR g_sz_WINDOW_ClASS[] = "My Calculator";
+CONST CHAR g_sz_DEFAULT_SKIN[] = "square_blue";
+
 //g_ Global
 //sz_ String Zero
 CONST INT g_i_START_X = 10;
@@ -27,9 +30,15 @@ CONST INT g_i_BTN_SIZE_DOUBLE = g_i_BTN_SIZE * 2 + g_i_INTREVAL_BUTTON;
 CONST INT g_i_HEIGHT = g_i_BTN_SIZE + g_i_INTREVAL_BUTTON;
 
 CONST CHAR g_OPERATIONS[] = "+-*/";
-INT style = 1;
+
+CONST CHAR g_sz_DISPLAY_FONT[] = "Tahoma";
+CONST INT g_i_DISPLAY_FONT_HEIGHT = g_i_DISPLAY_HEIGHT - 2;
+CONST INT g_i_DISPLAY_FONT_WIDTH = g_i_DISPLAY_FONT_HEIGHT / 2.5;
+
+
 
 LRESULT CALLBACK WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+VOID SetSkin(HWND hwnd, CONST CHAR sz_skin[]);
 
 INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR IpCmdLine, INT nCmdShow)
 {
@@ -45,7 +54,7 @@ INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR IpCmdLine, IN
     wc.hIcon = (HICON)LoadImage(hInstance, "icon_calc.ico", IMAGE_ICON, LR_DEFAULTSIZE, LR_DEFAULTSIZE, LR_LOADFROMFILE);
     wc.hIconSm = (HICON)LoadImage(hInstance, "icon_calc_mini.ico", IMAGE_ICON, LR_DEFAULTSIZE, LR_DEFAULTSIZE, LR_LOADFROMFILE);
     wc.hCursor = LoadCursor(hInstance, IDC_ARROW);
-    wc.hbrBackground = (HBRUSH)(COLOR_WINDOW + style);
+    wc.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
 
     wc.hInstance = hInstance;
     wc.lpfnWndProc = WndProc;
@@ -69,7 +78,7 @@ INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR IpCmdLine, IN
         g_sz_WINDOW_ClASS,
         WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX,
         CW_USEDEFAULT, CW_USEDEFAULT,
-        (g_i_BTN_SIZE_WITH_INTERVAL * 5 + g_i_START_X * 2.5) , (g_i_BTN_SIZE_WITH_INTERVAL * 5 + g_i_START_Y * 5) + 100,
+        (g_i_BTN_SIZE_WITH_INTERVAL * 5 + g_i_START_X * 2.5), (g_i_BTN_SIZE_WITH_INTERVAL * 5 + g_i_START_Y * 5) + 100,
         NULL,
         NULL,
         hInstance,
@@ -124,6 +133,39 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
             GetModuleHandle(NULL),
             NULL
         );
+       /* LOGFONT lFont;
+        ZeroMemory(&lFont, sizeof(lFont));
+        lFont.lfHeight = 32;
+        lFont.lfWeight = 20;
+        lFont.lfEscapement = 0;
+        lFont.lfOrientation = 0;
+        lFont.lfWeight = 500;
+        lFont.lfItalic = FALSE;
+        lFont.lfUnderline = FALSE;
+        lFont.lfStrikeOut = FALSE;
+        lFont.lfCharSet = DEFAULT_CHARSET;
+        lFont.lfOutPrecision = OUT_TT_PRECIS;
+        lFont.lfClipPrecision = CLIP_DEFAULT_PRECIS;
+        lFont.lfQuality = ANTIALIASED_QUALITY;
+        lFont.lfPitchAndFamily = DEFAULT_PITCH | FF_DONTCARE;
+        strcpy(lFont.lfFaceName, "Arial");
+
+        HFONT hFont = CreateFontIndirect(&lFont);*/
+
+        HFONT hFont = CreateFont
+        (
+            g_i_DISPLAY_FONT_HEIGHT, g_i_DISPLAY_FONT_WIDTH,
+            GM_ADVANCED, 0, FW_DEMIBOLD,
+            FALSE, FALSE, FALSE,
+            DEFAULT_CHARSET,
+            OUT_CHARACTER_PRECIS,
+            CLIP_CHARACTER_PRECIS,
+            ANTIALIASED_QUALITY,
+            DEFAULT_PITCH | FF_DONTCARE,
+            g_sz_DISPLAY_FONT
+        );
+        SendMessage(hDisplay, WM_SETFONT, (WPARAM)hFont, TRUE);
+                    
         // неоптимизорованые кнопки
         /*CreateWindowEx
         (
@@ -357,7 +399,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
                 CreateWindowEx
                 (
                     0, "Button", sz_digit,
-                    BTN_STYLE,
+                    BTN_STYLE | BS_BITMAP,
                     g_i_BTN_START_X + g_i_BTN_SIZE_WITH_INTERVAL * j,
                     g_i_BTN_START_Y + g_i_BTN_SIZE_WITH_INTERVAL * i,
                     g_i_BTN_SIZE, g_i_BTN_SIZE,
@@ -370,11 +412,12 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
                 i_digit++;
             }
         }
+
         //////////////////////////////////////////////////////
         CreateWindowEx
         (
             0, "Button", " 0 ",
-            BTN_STYLE,
+            BTN_STYLE | BS_BITMAP,
             g_i_START_X, g_i_BTN_START_Y + g_i_BTN_SIZE_WITH_INTERVAL * 3,
             g_i_BTN_SIZE_DOUBLE, g_i_BTN_SIZE,
             hwnd,
@@ -382,6 +425,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
             GetModuleHandle(NULL),
             NULL
         );
+        SetSkin(hwnd, g_sz_DEFAULT_SKIN);
         CreateWindowEx
         (
             0, "Button", " . ",
@@ -404,11 +448,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
             CreateWindowEx
             (
                 0, "Button", sz_operation,
-
-                
-                BTN_STYLE | BS_BITMAP,
-
-
+                BTN_STYLE,
                 g_i_BTN_START_X + g_i_BTN_SIZE_WITH_INTERVAL * 3, g_i_BTN_START_Y + g_i_BTN_SIZE_WITH_INTERVAL * (3 - i),
                 g_i_BTN_SIZE, g_i_BTN_SIZE,
                 hwnd,
@@ -417,25 +457,9 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
                 NULL
             );
         }
-        if (style == 1)
-        {
-
-        HWND hBtnPlus = GetDlgItem(hwnd, IDC_BUTTON_PLUS);
-        HBITMAP hBitMapPlus = LoadBitmap(GetModuleHandle(NULL), MAKEINTRESOURCE(IDB_BITMAP_PLUS));
-        SendMessage(hBtnPlus, BM_SETIMAGE, (WPARAM)IMAGE_BITMAP, (LPARAM)hBitMapPlus);
-
-        HWND hBtnMinus = GetDlgItem(hwnd, IDC_BUTTON_MINUS);
-        HBITMAP hBitMapMinus = LoadBitmap(GetModuleHandle(NULL), MAKEINTRESOURCE(IDB_BITMAP_MINUS));
-        SendMessage(hBtnMinus, BM_SETIMAGE, (WPARAM)IMAGE_BITMAP, (LPARAM)hBitMapMinus);
-
-        HWND hBtnAster = GetDlgItem(hwnd, IDC_BUTTON_ASTER);
-        HBITMAP hBitMapAster = LoadBitmap(GetModuleHandle(NULL), MAKEINTRESOURCE(IDB_BITMAP_ASTER));
-        SendMessage(hBtnAster, BM_SETIMAGE, (WPARAM)IMAGE_BITMAP, (LPARAM)hBitMapAster);
-
-        HWND hBtnSlash = GetDlgItem(hwnd, IDC_BUTTON_SLASH);
-        HBITMAP hBitMapSlash = LoadBitmap(GetModuleHandle(NULL), MAKEINTRESOURCE(IDB_BITMAP_SLASH));
-        SendMessage(hBtnSlash, BM_SETIMAGE, (WPARAM)IMAGE_BITMAP, (LPARAM)hBitMapSlash);
-        }      
+        //HWND hBtnPlus = GetDlgItem(hwnd, IDC_BUTTON_PLUS);
+        //HBITMAP hBitMap = LoadBitmap(GetModuleHandle(NULL), MAKEINTRESOURCE(IDB_BITMAP_PLUS));
+        //SendMessage(hBtnPlus, BM_SETIMAGE, (WPARAM)IMAGE_BITMAP, (LPARAM)hBitMap);
 
 
         CreateWindowEx
@@ -471,32 +495,20 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
             GetModuleHandle(NULL),
             NULL
         );
-        CreateWindowEx
-        (
-            0, "Button", " OK ",
-            BTN_STYLE,
-            g_i_BTN_START_X + g_i_BTN_SIZE_WITH_INTERVAL * 4, g_i_BTN_START_Y + g_i_BTN_SIZE_WITH_INTERVAL * 4,
-            g_i_BTN_SIZE, g_i_BTN_SIZE,
-            hwnd,
-            (HMENU)IDC_BUTTON_OK,
-            GetModuleHandle(NULL),
-            NULL
-        );
-        CreateWindowEx
-        (
-            0, "ComboBox", " ",
-            WS_CHILD | WS_VISIBLE | SS_RIGHT | SS_SUNKEN,
-            g_i_BTN_START_X, g_i_BTN_START_Y + g_i_BTN_SIZE_WITH_INTERVAL * 4,
-            g_i_BTN_SIZE * 4, g_i_BTN_SIZE * 1.6,
-            hwnd,
-            (HMENU)IDC_COMBO_BOX,
-            GetModuleHandle(NULL),
-            NULL
-        );
+
+
     }
     break;
 
-
+    case WM_CTLCOLOREDIT:
+    {
+        HDC hdc = (HDC)wParam;
+        SetBkMode(hdc, OPAQUE);
+        SetBkColor(hdc, RGB(0, 0, 100)); HBRUSH hBrush = CreateSolidBrush(RGB(0, 0, 255));
+        SetTextColor(hdc, RGB(255, 0, 0));
+        return (LRESULT)hBrush;
+    }
+    break;
 
     case WM_COMMAND:
     {
@@ -590,39 +602,9 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
             SendMessage(hStatic, WM_SETTEXT, 0, (LPARAM)sz_buffer);
         }
 
-   
-        
-        HWND hCombo = GetDlgItem(hwnd, IDC_COMBO_BOX);
-        for (int i = 0; i < sizeof(g_sz_VALUES) / sizeof(g_sz_VALUES[0]); i++)
-        {
-            SendMessage(hCombo, CB_ADDSTRING, 0, (LPARAM)g_sz_VALUES[i]);
-        }
-        switch (LOWORD(wParam))
-        {
-        case IDC_BUTTON_OK:
-        {
-            CONST INT SIZE_STYLE = 256;
-            CHAR sz_buffer_style[SIZE_STYLE] = {};
-            HWND hCombo = GetDlgItem(hwnd, IDC_COMBO_BOX);
-            int i = SendMessage(hCombo, CB_GETCURSEL, 0, 0);
-            SendMessage(hCombo, CB_GETLBTEXT, i, (LPARAM)sz_buffer_style);
-             style = i;
-            if (i < 0)
-            {
-                MessageBox(hwnd, "Вы нечего не выбрали", "info", MB_OK | MB_ICONINFORMATION);
-                
-            }
-            else
-            {
-                CHAR sz_message[SIZE_STYLE] = {};
-                sprintf(sz_message, "Был выбран элемент № %i, co значением \"%s\"", i, sz_buffer_style);
-                MessageBox(hwnd, sz_message, "info", MB_OK | MB_ICONINFORMATION);
-               
-            }
-        }
-        }
-    
-        
+
+
+
     }
     case WM_KEYDOWN:
     {
@@ -649,9 +631,61 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
         }
     }
     break;
+    case WM_CONTEXTMENU:
+    {
+        HMENU hMenu = CreatePopupMenu();
+        InsertMenu(hMenu, 0, MF_BYPOSITION | MF_STRING, IDC_EXIT, "Exit");
+        InsertMenu(hMenu, 0, MF_BYPOSITION | MF_SEPARATOR, 0, NULL);
+        InsertMenu(hMenu, 0, MF_BYPOSITION | MF_STRING, IDC_SQUARE, "Square buttons");
+        InsertMenu(hMenu, 0, MF_BYPOSITION | MF_STRING, IDC_ROUND, "Round buttons");
+
+        switch (TrackPopupMenuEx(hMenu, TPM_BOTTOMALIGN | TPM_LEFTALIGN | TPM_RETURNCMD, LOWORD(lParam), HIWORD(lParam), hwnd, NULL))
+        {
+        case IDC_ROUND:SetSkin(hwnd, "round_blue"); break;
+        case IDC_SQUARE: SetSkin(hwnd, "square_blue"); break;
+        case IDC_EXIT: SendMessage(hwnd, IDC_EXIT, 0, 0);
+        }
+    }
+    break;
     case WM_DESTROY:PostQuitMessage(0); break;
+    case IDC_EXIT:
     case WM_CLOSE: DestroyWindow(hwnd); break;
     default: return DefWindowProc(hwnd, uMsg, wParam, lParam);
     }
     return NULL;
+}
+VOID SetSkin(HWND hwnd, CONST CHAR sz_skin[])
+{
+
+    CONST int SIZE = 10;
+    HWND hButton[SIZE] = {};
+    for (int i = 0; i < SIZE; i++)
+    {
+        hButton[i] = GetDlgItem(hwnd, i + IDC_BUTTON_0);
+        //GetDlgItem(hwnd, i + 1000);
+        CHAR sz_filename[FILENAME_MAX] = {};
+        sprintf(sz_filename, "buttonsbmp\\%s\\button_%i.bmp",sz_skin, i);
+        HBITMAP hBitmap = (HBITMAP)LoadImage(
+            GetModuleHandle(NULL),
+            sz_filename,
+            IMAGE_BITMAP,
+            i > 0 ?  g_i_BTN_SIZE :  g_i_BTN_SIZE_DOUBLE, g_i_BTN_SIZE,
+            LR_LOADFROMFILE
+        );
+        // hBitMap[i] = LoadBitmap(GetModuleHandle(NULL), MAKEINTRESOURCE(i + 100));
+        SendMessage(hButton[i], BM_SETIMAGE, (WPARAM)IMAGE_BITMAP, (LPARAM)hBitmap);
+      /*  DWORD dwErrorID = GetLastError();
+        LPSTR lpMessageBuffer = NULL;
+        DWORD dwSize = FormatMessage
+        (
+            FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
+            NULL,
+            dwErrorID,
+            MAKELANGID(LANG_NEUTRAL, SUBLANG_RUSSIAN_RUSSIA),
+            (LPSTR)&lpMessageBuffer,
+            0,
+            NULL
+        );*/
+        //MessageBox(hwnd, lpMessageBuffer, "Erro", MB_OK | MB_ICONERROR);
+    }
 }
